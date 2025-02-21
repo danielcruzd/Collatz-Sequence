@@ -1,34 +1,36 @@
-﻿# Cargar System.Numerics para manejar BigInteger
+# collatz.ps1
+
+# Load System.Numerics to handle BigInteger
 Add-Type -AssemblyName System.Numerics
 
-# Solicitar al usuario un número
-$n = Read-Host "Ingrese un número positivo para la secuencia de Collatz"
+# Request the user to input a positive number
+$n = Read-Host "Enter a positive number for the Collatz sequence"
 
 try {
-    # Convertir entrada a BigInteger
+    # Convert input to BigInteger
     $bigIntN = [System.Numerics.BigInteger]::Parse($n)
-
+    
     if ($bigIntN -le 0) {
-        Write-Host "Error: Ingrese un número positivo." -ForegroundColor Red
+        Write-Host "Error: Please enter a positive number." -ForegroundColor Red
         exit
     }
-
-    $steps = 0
-    $sequence = @($bigIntN)
-
-    while ($bigIntN -ne 1) {
-        if ($bigIntN % 2 -eq 0) {
-            $bigIntN = $bigIntN / 2
-        } else {
-            $bigIntN = 3 * $bigIntN + 1
-        }
-        $sequence += $bigIntN
-        $steps++
-    }
-
-    Write-Host "`nSecuencia de Collatz: $($sequence -join ' → ')" -ForegroundColor Cyan
-    Write-Host "Pasos hasta llegar a 1: $steps" -ForegroundColor Green
-
 } catch {
-    Write-Host "Error: Ingrese un número válido." -ForegroundColor Red
+    Write-Host "Error: Please enter a valid number." -ForegroundColor Red
+    exit
 }
+
+$steps = 0
+$sequence = @($bigIntN)
+
+while ($bigIntN -ne 1) {
+    if ($bigIntN % 2 -eq 0) {
+        $bigIntN = $bigIntN / 2
+    } else {
+        $bigIntN = 3 * $bigIntN + 1
+    }
+    $sequence += $bigIntN
+    $steps++
+}
+
+Write-Host "`nCollatz Sequence: $($sequence -join ' → ')" -ForegroundColor Cyan
+Write-Host "Steps to reach 1: $steps" -ForegroundColor Green
